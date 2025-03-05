@@ -1,11 +1,14 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     box-sizing: border-box;
 }
+html{
+    scroll-behavior: smooth;
+}
 body{
-    background: #080808;
+    background: #000000;
     color: #fff;
 }
 #header{
@@ -14,6 +17,7 @@ body{
     background-image: url(images/background.png);
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 .container{
     padding: 10px 10%;
@@ -69,7 +73,7 @@ nav ul li a:hover::after{
 }
 
 .header-text h1 span{
-    color:#1983c1;
+    color:#00a6fb;
 }
 /* ---------about------------ */
 #about {
@@ -94,19 +98,32 @@ nav ul li a:hover::after{
 }
 
 .sub-title{
-    font-size: 60px;
+    font-size: 70px;
     font-weight: 600;
     color: #fff;
+}
+.about-col-2 p{
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+.about-col-2 p span{
+    color: #00a6fb;
 }
 
 .tab-titles{
     display: flex;
+    font-size: 20px;
     margin: 20px 0 40px;
+}
+.tab-titles p{
+    font-size: 20px;
+    font-weight: bold;
 }
 .tab-links{
     margin-right: 50px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: bold;
     cursor: pointer;
     position: relative;
 }
@@ -127,6 +144,7 @@ nav ul li a:hover::after{
 
 .tab-contents ul li{
     list-style: none;
+    font-size: 16px;
     margin: 10px 0;
 }
 
@@ -339,7 +357,7 @@ nav .fas{
         font-size: 25px;
     }
     nav ul{
-        background: #ff004f;
+        background: #3cccfc;
         position: fixed;
         top: 0;
         right: -200px;
@@ -365,4 +383,25 @@ nav .fas{
     .about-col-1, .about-col-2{
         flex-basis: 100%;
     }
+    .about-col-1{
+        margin-bottom: 30px;
+    }
+    .about-col-2{
+        font-size: 14px;
+    }
+    .tab-links{
+        font-size: 16px;
+        margin-right: 20px;
+    }
+    .contact-left, .contact-right{
+        flex-basis: 100%;
+    }
+    .copyright{
+        font-size: 14px;
+    }
+}
+#msg{
+    color: #61b752;
+    margin-top: -40px;
+    display: block;
 }
