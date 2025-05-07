@@ -512,13 +512,13 @@ nav ul li a:hover::after {
     text-decoration: none;
     font-size: 30px;
     margin-right: 15px;
-    color: #00a6fb; /* Restored original blue color */
+    color: #6366f1; /* Indigo color */
     display: inline-block;
     transition: all 0.3s;
 }
 
 .social-icons a:hover {
-    color: #6366f1; /* Indigo color */
+    color: #00a6fb; /* Blue color */
     transform: translateY(-5px);
 }
 
