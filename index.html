@@ -9,9 +9,13 @@
     <link href="https://fonts.cdnfonts.com/css/noto-sans-devanagari" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/7b386abee7.js" crossorigin="anonymous"></script>
+    <!-- Three.js Library for advanced 3D particle effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 <div id="header">
+    <!-- Animated particles background -->
+    <div id="particles-js"></div>
     <div class="container">
         <nav>
             <img src="images/logo.png" class="logo">
@@ -239,6 +243,489 @@
         })
         .catch(error => console.error('Error!', error.message))
     })
+  </script>
+
+  <!-- Advanced Three.js Particle System -->
+  <script>
+    /**
+     * Advanced 3D Particle System using Three.js
+     * Creates floating particles with dynamic connections, lighting effects, and smooth interactions
+     */
+    
+    class AdvancedParticleSystem {
+        constructor() {
+            this.container = document.getElementById('particles-js');
+            this.scene = null;
+            this.camera = null;
+            this.renderer = null;
+            this.particles = [];
+            this.particleGeometry = null;
+            this.particleMaterial = null;
+            this.particleSystem = null;
+            this.mouse = { x: 0, y: 0 };
+            this.windowHalf = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+            
+            // Configuration
+            this.config = {
+                particleCount: window.innerWidth <= 600 ? 150 : 300, // More particles for richer effect
+                maxDistance: 150,
+                repulsionRadius: 100,
+                colors: {
+                    primary: 0x6366f1,   // Indigo
+                    secondary: 0xE7D1BB, // Warm beige
+                    accent: 0x8e94f2     // Light indigo
+                }
+            };
+            
+            this.init();
+            this.animate();
+        }
+    
+        
+        init() {
+            // Create scene
+            this.scene = new THREE.Scene();
+            
+            // Create camera with perspective for 3D depth
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000);
+            this.camera.position.z = 1000;
+            
+            // Create renderer with enhanced settings
+            this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            this.container.appendChild(this.renderer.domElement);
+            
+            // Create particle system
+            this.createParticles();
+            this.createConnections();
+            
+            // Add event listeners
+            this.addEventListeners();
+        }
+        
+        createParticles() {
+            this.particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(this.config.particleCount * 3);
+            const colors = new Float32Array(this.config.particleCount * 3);
+            const sizes = new Float32Array(this.config.particleCount);
+            
+            // Initialize particle data
+            this.particles = [];
+            
+            for (let i = 0; i < this.config.particleCount; i++) {
+                const i3 = i * 3;
+                
+                // Random positions in 3D space
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 1000;
+                
+                positions[i3] = x;
+                positions[i3 + 1] = y;
+                positions[i3 + 2] = z;
+                
+                // Color variations - mix of indigo and beige
+                const colorChoice = Math.random();
+                let color;
+                if (colorChoice < 0.7) {
+                    color = new THREE.Color(this.config.colors.primary); // Indigo
+                } else {
+                    color = new THREE.Color(this.config.colors.secondary); // Beige
+                }
+                
+                colors[i3] = color.r;
+                colors[i3 + 1] = color.g;
+                colors[i3 + 2] = color.b;
+                
+                // Random sizes
+                sizes[i] = Math.random() * 4 + 1;
+                
+                // Store particle data for animation
+                this.particles.push({
+                    velocity: {
+                        x: (Math.random() - 0.5) * 0.5,
+                        y: (Math.random() - 0.5) * 0.5,
+                        z: (Math.random() - 0.5) * 0.5
+                    },
+                    originalColor: color.clone(),
+                    basePosition: { x, y, z }
+                });
+            }
+            
+            this.particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            this.particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            this.particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            
+            // Enhanced particle material
+            this.particleMaterial = new THREE.PointsMaterial({
+                size: 3,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+            
+            this.particleSystem = new THREE.Points(this.particleGeometry, this.particleMaterial);
+            this.scene.add(this.particleSystem);
+        }
+        
+        createConnections() {
+            // Create dynamic line connections with comet trails
+            this.connectionGeometry = new THREE.BufferGeometry();
+            this.connectionMaterial = new THREE.LineBasicMaterial({
+                color: 0x6366f1,
+                opacity: 0.4,
+                transparent: true,
+                blending: THREE.AdditiveBlending
+            });
+            
+            this.connections = new THREE.LineSegments(this.connectionGeometry, this.connectionMaterial);
+            this.scene.add(this.connections);
+            
+            // Comet trail system
+            this.trailSegments = [];
+            this.maxTrailLength = 8; // Number of trail segments per connection
+            this.trailDecay = 0.85; // How fast trails fade
+            
+            // Create trail geometry for comet effects
+            this.trailGeometry = new THREE.BufferGeometry();
+            this.trailMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 }
+                },
+                vertexShader: `
+                    attribute float alpha;
+                    attribute vec3 color;
+                    varying float vAlpha;
+                    varying vec3 vColor;
+                    uniform float time;
+                    
+                    void main() {
+                        vAlpha = alpha;
+                        vColor = color;
+                        
+                        // Add subtle movement to trail segments
+                        vec3 pos = position;
+                        pos.x += sin(time * 2.0 + position.y * 0.01) * 0.5;
+                        pos.y += cos(time * 1.5 + position.x * 0.01) * 0.3;
+                        
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    varying float vAlpha;
+                    varying vec3 vColor;
+                    uniform float time;
+                    
+                    void main() {
+                        // Add pulsing glow effect
+                        float glow = 0.8 + sin(time * 3.0) * 0.2;
+                        vec3 finalColor = vColor * glow;
+                        
+                        gl_FragColor = vec4(finalColor, vAlpha);
+                    }
+                `,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthTest: false
+            });
+            
+            this.trailLines = new THREE.LineSegments(this.trailGeometry, this.trailMaterial);
+            this.scene.add(this.trailLines);
+        }
+        
+        updateConnections() {
+            const positions = this.particleGeometry.attributes.position.array;
+            const connectionPositions = [];
+            const currentConnections = [];
+            
+            // Find current connections between nearby particles
+            for (let i = 0; i < this.config.particleCount; i += 2) {
+                const i3 = i * 3;
+                const pos1 = {
+                    x: positions[i3],
+                    y: positions[i3 + 1],
+                    z: positions[i3 + 2]
+                };
+                
+                for (let j = i + 1; j < Math.min(i + 20, this.config.particleCount); j++) {
+                    const j3 = j * 3;
+                    const pos2 = {
+                        x: positions[j3],
+                        y: positions[j3 + 1],
+                        z: positions[j3 + 2]
+                    };
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(pos1.x - pos2.x, 2) +
+                        Math.pow(pos1.y - pos2.y, 2) +
+                        Math.pow(pos1.z - pos2.z, 2)
+                    );
+                    
+                    if (distance < this.config.maxDistance) {
+                        connectionPositions.push(pos1.x, pos1.y, pos1.z);
+                        connectionPositions.push(pos2.x, pos2.y, pos2.z);
+                        
+                        // Store connection for trail processing
+                        currentConnections.push({
+                            id: `${i}-${j}`,
+                            start: { ...pos1 },
+                            end: { ...pos2 },
+                            distance: distance
+                        });
+                    }
+                }
+            }
+            
+            // Update main connections
+            this.connectionGeometry.setAttribute('position', new THREE.Float32BufferAttribute(connectionPositions, 3));
+            
+            // Update comet trails
+            this.updateCometTrails(currentConnections);
+        }
+        
+        updateCometTrails(currentConnections) {
+            const time = Date.now() * 0.001;
+            
+            // Add new connections to trail history
+            currentConnections.forEach(connection => {
+                let existingTrail = this.trailSegments.find(trail => trail.id === connection.id);
+                
+                if (!existingTrail) {
+                    // Create new trail
+                    this.trailSegments.push({
+                        id: connection.id,
+                        history: [connection],
+                        life: 1.0,
+                        color: this.getTrailColor(connection.id)
+                    });
+                } else {
+                    // Update existing trail
+                    existingTrail.history.unshift(connection);
+                    existingTrail.life = 1.0; // Reset life when connection is active
+                    
+                    // Limit trail length
+                    if (existingTrail.history.length > this.maxTrailLength) {
+                        existingTrail.history.pop();
+                    }
+                }
+            });
+            
+            // Update trail life and remove old trails
+            this.trailSegments = this.trailSegments.filter(trail => {
+                trail.life *= this.trailDecay;
+                return trail.life > 0.01; // Remove very faded trails
+            });
+            
+            // Build trail geometry
+            this.buildTrailGeometry();
+        }
+        
+        getTrailColor(connectionId) {
+            // Generate consistent color based on connection ID
+            const hash = connectionId.split('').reduce((a, b) => {
+                a = ((a << 5) - a) + b.charCodeAt(0);
+                return a & a;
+            }, 0);
+            
+            const colorSeed = Math.abs(hash) / 2147483647;
+            
+            if (colorSeed < 0.7) {
+                // Indigo variants
+                return {
+                    r: 0.39 + Math.sin(colorSeed * 10) * 0.1, // #6366f1 with variation
+                    g: 0.4 + Math.sin(colorSeed * 12) * 0.1,
+                    b: 0.95 + Math.sin(colorSeed * 8) * 0.05
+                };
+            } else {
+                // Beige variants
+                return {
+                    r: 0.91 + Math.sin(colorSeed * 15) * 0.05, // #E7D1BB with variation
+                    g: 0.82 + Math.sin(colorSeed * 18) * 0.05,
+                    b: 0.73 + Math.sin(colorSeed * 20) * 0.05
+                };
+            }
+        }
+        
+        buildTrailGeometry() {
+            const trailPositions = [];
+            const trailColors = [];
+            const trailAlphas = [];
+            
+            this.trailSegments.forEach(trail => {
+                for (let i = 0; i < trail.history.length - 1; i++) {
+                    const segment = trail.history[i];
+                    const nextSegment = trail.history[i + 1];
+                    
+                    // Calculate trail segment alpha (fades towards the tail)
+                    const segmentAlpha = trail.life * (1 - i / trail.history.length);
+                    
+                    if (segmentAlpha > 0.01) {
+                        // Interpolate between current and next segment for smooth trails
+                        const interpolationFactor = 0.3;
+                        const startX = segment.start.x;
+                        const startY = segment.start.y;
+                        const startZ = segment.start.z;
+                        const endX = segment.end.x + (nextSegment.end.x - segment.end.x) * interpolationFactor;
+                        const endY = segment.end.y + (nextSegment.end.y - segment.end.y) * interpolationFactor;
+                        const endZ = segment.end.z + (nextSegment.end.z - segment.end.z) * interpolationFactor;
+                        
+                        // Add trail segment
+                        trailPositions.push(startX, startY, startZ);
+                        trailPositions.push(endX, endY, endZ);
+                        
+                        // Trail colors with intensity variation
+                        const intensity = segmentAlpha * (0.8 + Math.sin(Date.now() * 0.003 + i * 0.5) * 0.2);
+                        trailColors.push(trail.color.r * intensity, trail.color.g * intensity, trail.color.b * intensity);
+                        trailColors.push(trail.color.r * intensity * 0.7, trail.color.g * intensity * 0.7, trail.color.b * intensity * 0.7);
+                        
+                        // Alpha values for fading effect
+                        trailAlphas.push(segmentAlpha);
+                        trailAlphas.push(segmentAlpha * 0.5); // Fade towards end
+                    }
+                }
+            });
+            
+            // Update trail geometry
+            this.trailGeometry.setAttribute('position', new THREE.Float32BufferAttribute(trailPositions, 3));
+            this.trailGeometry.setAttribute('color', new THREE.Float32BufferAttribute(trailColors, 3));
+            this.trailGeometry.setAttribute('alpha', new THREE.Float32BufferAttribute(trailAlphas, 1));
+        }
+        
+        addEventListeners() {
+            // Mouse movement
+            window.addEventListener('mousemove', (event) => {
+                this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+            
+            // Window resize
+            window.addEventListener('resize', () => {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Click effect
+            window.addEventListener('click', (event) => {
+                this.addClickEffect(event.clientX, event.clientY);
+            });
+        }
+        
+        addClickEffect(x, y) {
+            // Create a burst of temporary trail segments radiating from click point
+            const burstCount = 12;
+            const clickTime = Date.now() * 0.001;
+            
+            // Convert screen coordinates to world coordinates
+            const vector = new THREE.Vector3(
+                (x / window.innerWidth) * 2 - 1,
+                -(y / window.innerHeight) * 2 + 1,
+                0.5
+            );
+            vector.unproject(this.camera);
+            
+            const centerPoint = {
+                x: vector.x,
+                y: vector.y, 
+                z: vector.z
+            };
+            
+            // Create radial burst trails
+            for (let i = 0; i < burstCount; i++) {
+                const angle = (i / burstCount) * Math.PI * 2;
+                const radius = 50 + Math.random() * 100;
+                const endPoint = {
+                    x: centerPoint.x + Math.cos(angle) * radius,
+                    y: centerPoint.y + Math.sin(angle) * radius,
+                    z: centerPoint.z + (Math.random() - 0.5) * 50
+                };
+                
+                // Create temporary trail
+                this.trailSegments.push({
+                    id: `burst-${clickTime}-${i}`,
+                    history: [{
+                        start: centerPoint,
+                        end: endPoint,
+                        distance: radius
+                    }],
+                    life: 1.5, // Stronger initial life for burst effect
+                    color: {
+                        r: 0.91 + Math.random() * 0.09, // Bright beige variants
+                        g: 0.82 + Math.random() * 0.09,
+                        b: 0.73 + Math.random() * 0.09
+                    }
+                });
+            }
+        }
+        
+        animate() {
+            requestAnimationFrame(() => this.animate());
+            
+            const time = Date.now() * 0.001;
+            const positions = this.particleGeometry.attributes.position.array;
+            
+            // Update particle positions with mouse interaction
+            for (let i = 0; i < this.config.particleCount; i++) {
+                const i3 = i * 3;
+                const particle = this.particles[i];
+                
+                // Natural floating movement
+                positions[i3] += particle.velocity.x;
+                positions[i3 + 1] += particle.velocity.y;
+                positions[i3 + 2] += particle.velocity.z;
+                
+                // Mouse repulsion effect
+                const mouseWorldX = this.mouse.x * 1000;
+                const mouseWorldY = this.mouse.y * 1000;
+                const dx = positions[i3] - mouseWorldX;
+                const dy = positions[i3 + 1] - mouseWorldY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < this.config.repulsionRadius) {
+                    const force = (this.config.repulsionRadius - distance) / this.config.repulsionRadius;
+                    positions[i3] += (dx / distance) * force * 3;
+                    positions[i3 + 1] += (dy / distance) * force * 3;
+                }
+                
+                // Boundaries - wrap around
+                if (positions[i3] > 1000) positions[i3] = -1000;
+                if (positions[i3] < -1000) positions[i3] = 1000;
+                if (positions[i3 + 1] > 1000) positions[i3 + 1] = -1000;
+                if (positions[i3 + 1] < -1000) positions[i3 + 1] = 1000;
+                if (positions[i3 + 2] > 500) positions[i3 + 2] = -500;
+                if (positions[i3 + 2] < -500) positions[i3 + 2] = 500;
+            }
+            
+            // Update attributes
+            this.particleGeometry.attributes.position.needsUpdate = true;
+            
+            // Update trail shader time uniform for animation
+            this.trailMaterial.uniforms.time.value = time;
+            
+            // Update connections and trails more frequently for smooth comet effects
+            if (Math.floor(time * 60) % 2 === 0) {
+                this.updateConnections();
+            }
+            
+            // Subtle camera movement following mouse
+            this.camera.position.x += (this.mouse.x * 50 - this.camera.position.x) * 0.02;
+            this.camera.position.y += (-this.mouse.y * 50 - this.camera.position.y) * 0.02;
+            this.camera.lookAt(this.scene.position);
+            
+            // Rotate the entire particle system slowly
+            this.particleSystem.rotation.y += 0.001;
+            
+            this.renderer.render(this.scene, this.camera);
+        }
+    }
+    
+    // Initialize when page loads
+    window.addEventListener('load', () => {
+        new AdvancedParticleSystem();
+    });
   </script>
 
 </body>

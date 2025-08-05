@@ -23,12 +23,54 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    position: relative; /* Enable positioning for particles */
+}
+
+/* Particles.js background container */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Behind the content */
+    background: transparent;
+    pointer-events: auto; /* Ensure particles can receive mouse events */
+}
+
+/* Three.js canvas specific styling */
+#particles-js canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: auto; /* Explicitly enable mouse events on canvas */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Ensure canvas stays behind content */
+}
+
+/* Ensure header content stays above particles */
+#header .container {
+    position: relative;
+    z-index: 2; /* Above the particles */
+    pointer-events: none; /* Allow mouse events to pass through to particles */
+}
+
+/* Re-enable pointer events for interactive elements */
+#header .container nav,
+#header .container nav a,
+#header .container nav ul,
+#header .container nav ul li,
+#header .container nav ul li a,
+#header .container nav .fas {
+    pointer-events: auto; /* Enable interactions for navigation */
 }
 
 /* Section divider styles */
 .section-divider {
     height: 0.5px; /* Ultra thin divider */
-    background: linear-gradient(to right, transparent, #6366f1, transparent); /* Indigo color */
+    background: linear-gradient(to right, transparent, #E7D1BB, transparent); /* Warm beige color */
     margin: 0 auto;
     width: 40%; /* Narrower width */
     position: relative;
@@ -58,7 +100,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #f0f0f0;
+    color: #E7D1BB; /* Warm beige for navigation menu text */
     font-family: 'Noto Sans Devanagari', sans-serif;
     text-decoration: none;
     font-size: 18px;
@@ -70,7 +112,7 @@ nav ul li a::after {
     content: '';
     width: 0;
     height: 2px; /* Thinner underline */
-    background: #6366f1; /* Indigo color */
+    background: #E7D1BB; /* Warm beige underline to match text */
     position: absolute;
     left: 0;
     bottom: -6px;
@@ -78,7 +120,7 @@ nav ul li a::after {
 }
 
 nav ul li a:hover {
-    color: #8e94f2; /* Lighter indigo on hover */
+    color: #c8b39e; /* Slightly darker beige on hover */
 }
 
 nav ul li a:hover::after {
@@ -101,6 +143,7 @@ nav ul li a:hover::after {
     font-size: 65px;
     line-height: 1.2;
     font-weight: 600;
+    color: #E7D1BB; /* Warm beige for main header */
 }
 
 .header-text h1 span {
@@ -123,7 +166,7 @@ nav ul li a:hover::after {
     left: 15%;
     right: 15%;
     height: 0.5px; /* Ultra thin divider */
-    background: linear-gradient(to right, transparent, #6366f1, transparent);
+    background: linear-gradient(to right, transparent, #E7D1BB, transparent);
     opacity: 0.7; /* Slightly more subtle */
 }
 
@@ -151,7 +194,7 @@ nav ul li a:hover::after {
     font-family: 'Noto Sans Devanagari', sans-serif;
     font-size: 65px;
     font-weight: 600;
-    color: #f0f0f0;
+    color: #E7D1BB; /* Warm beige for section headers */
     margin-bottom: 20px;
 }
 
@@ -252,7 +295,7 @@ nav ul li a:hover::after {
     left: 15%;
     right: 15%;
     height: 0.5px; /* Ultra thin divider */
-    background: linear-gradient(to right, transparent, #6366f1, transparent);
+    background: linear-gradient(to right, transparent, #E7D1BB, transparent);
     opacity: 0.7; /* Slightly more subtle */
 }
 
@@ -349,7 +392,7 @@ nav ul li a:hover::after {
     padding: 14px 50px;
     border-radius: 6px;
     text-decoration: none;
-    color: #f0f0f0;
+    color: #E7D1BB; /* Warm beige text color */
     transition: all 0.3s;
     background: transparent;
     position: relative;
@@ -374,7 +417,12 @@ nav ul li a:hover::after {
 }
 
 .btn:hover {
-    color: white;
+    color: #E7D1BB; /* Keep warm beige text color on hover */
+}
+
+.btn:active,
+.btn:focus {
+    color: #E7D1BB; /* Keep warm beige text color on active/focus states */
 }
 
 /* ------------publications---------------- */
@@ -391,7 +439,7 @@ nav ul li a:hover::after {
     left: 15%;
     right: 15%;
     height: 0.5px; /* Ultra thin divider */
-    background: linear-gradient(to right, transparent, #6366f1, transparent);
+    background: linear-gradient(to right, transparent, #E7D1BB, transparent);
     opacity: 0.7; /* Slightly more subtle */
 }
 
@@ -481,7 +529,7 @@ nav ul li a:hover::after {
     left: 15%;
     right: 15%;
     height: 0.5px; /* Ultra thin divider */
-    background: linear-gradient(to right, transparent, #6366f1, transparent);
+    background: linear-gradient(to right, transparent, #E7D1BB, transparent);
     opacity: 0.7; /* Slightly more subtle */
 }
 
@@ -526,6 +574,16 @@ nav ul li a:hover::after {
     display: inline-block;
     background: #6366f1; /* Indigo background */
     border: 1px solid #6366f1;
+    color: #E7D1BB; /* Consistent warm beige text color */
+}
+
+.btn.btn2:hover {
+    color: #E7D1BB; /* Keep warm beige text color on hover */
+}
+
+.btn.btn2:active,
+.btn.btn2:focus {
+    color: #E7D1BB; /* Keep warm beige text color on active/focus states */
 }
 
 .contact-right form {
@@ -580,6 +638,11 @@ nav .fas {
         background-image: linear-gradient(rgba(15, 17, 23, 0.7), rgba(15, 17, 23, 0.8)), url(images/phone-background.png);
     }
 
+    /* Optimize particles for mobile performance */
+    #particles-js {
+        opacity: 0.7; /* Slightly reduced visibility on mobile */
+    }
+
     .header-text {
         margin-top: 170%;
         font-size: 16px;
@@ -614,6 +677,14 @@ nav .fas {
         margin: 25px;
     }
 
+    nav ul li a {
+        color: #E7D1BB; /* Warm beige for side menu text */
+    }
+
+    nav ul li a:hover {
+        color: #c8b39e; /* Slightly darker beige on hover for side menu */
+    }
+
     nav ul .fas {
         position: absolute;
         top: 25px;
@@ -635,15 +706,53 @@ nav .fas {
 
     .about-col-2 {
         font-size: 14px;
+        /* Ensure text content matches image width constraints */
+        max-width: 100%;
+        padding-right: 0;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
     }
 
     .about-col-2 p{
         font-size: 14px;
+        /* Ensure paragraph text doesn't overflow */
+        width: 100%;
+        max-width: 100%;
+        text-align: justify;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        line-height: 1.6;
     }
 
     .about-col-2 .tab-links {
         font-size: 16px;
-        margin-right: 20px;
+        margin-right: 15px; /* Reduced margin to ensure all tabs fit in one line */
+    }
+
+    /* Ensure tab titles maintain original layout on mobile */
+    .about-col-2 .tab-titles {
+        max-width: 100%;
+        /* Keep original flex behavior - no wrapping */
+    }
+
+    .about-col-2 .tab-contents {
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    .about-col-2 .tab-contents ul li {
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        line-height: 1.5;
+    }
+
+    /* Ensure sub-title doesn't overflow on mobile */
+    .about-col-2 .sub-title {
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
     }
 
     .contact-left,
