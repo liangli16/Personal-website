@@ -750,15 +750,18 @@ nav .fas {
 
     .header-text {
         /* Adjust positioning for mobile devices - moved lower to ~70% from top */
-        margin-top: 50vh; /* Use viewport units instead of percentage */
-        /* Fallback for older mobile browsers */
-        margin-top: 50%;
+        margin-top: calc(50vh + env(safe-area-inset-top, 0px)); /* Works for both Safari and Chrome */
+        /* Fallback for browsers that don't support env() */
+        margin-top: 50vh;
         font-size: 16px;
         /* Ensure text doesn't get cut off on mobile */
         padding: 0 20px;
+        /* Additional padding for better spacing */
+        padding-top: 20px;
         /* Center positioning adjustments */
         position: relative;
         z-index: 10;
+        top: 0;
         /* Mobile text rendering improvements */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -922,15 +925,7 @@ nav .fas {
             perspective: 1000;
         }
         
-        .header-text {
-            /* Adjust for Safari's status bar and navigation - moved lower to ~70% from top */
-            margin-top: calc(50vh + env(safe-area-inset-top, 0px));
-            /* Additional padding for Safari */
-            padding-top: 20px;
-            /* Ensure proper positioning */
-            position: relative;
-            top: 0;
-        }
+
         
         #header .container {
             /* Ensure container spans full viewport in Safari */
