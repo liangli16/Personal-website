@@ -19,11 +19,18 @@ body {
 #header {
     width: 100%;
     height: 100vh;
+    /* Use min-height for better Safari support */
+    min-height: 100vh; 
     background-image: linear-gradient(rgba(15, 17, 23, 0.7), rgba(15, 17, 23, 0.8)), url(images/background.png);
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    /* Remove fixed attachment for Safari iOS compatibility */
+    background-attachment: scroll;
+    background-repeat: no-repeat;
     position: relative; /* Enable positioning for particles */
+    /* Ensure proper rendering on Safari iOS */
+    -webkit-background-size: cover;
+    -webkit-transform: translate3d(0,0,0); /* Hardware acceleration for Safari */
 }
 
 /* Particles.js background container */
@@ -55,6 +62,11 @@ body {
     position: relative;
     z-index: 2; /* Above the particles */
     pointer-events: none; /* Allow mouse events to pass through to particles */
+    /* Safari mobile fixes */
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    /* Ensure full height on Safari */
+    min-height: 100vh;
 }
 
 /* Re-enable pointer events for interactive elements */
@@ -313,9 +325,6 @@ nav ul li a:hover::after {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(99, 102, 241, 0.05); /* Very subtle border */
-    /* Ensure proper content containment */
-    min-height: 250px; /* Minimum height to accommodate content */
-    max-width: 100%; /* Prevent cards from exceeding container width */
 }
 
 .work:hover {
@@ -347,32 +356,17 @@ nav ul li a:hover::after {
     text-align: center;
     font-size: 14px;
     transition: height 0.5s;
-    /* Ensure proper text containment */
-    box-sizing: border-box;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
 }
 
 .layer h3 {
     font-weight: 600;
     margin-bottom: 20px;
     color: #ffffff;
-    /* Ensure heading text wraps properly within card boundaries */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    max-width: 100%;
 }
 
 .layer p {
     color: #e2e4ff;
     line-height: 1.6;
-    /* Ensure paragraph text wraps properly within card boundaries */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    max-width: 100%;
 }
 
 .layer a {
@@ -654,20 +648,57 @@ nav .fas {
 @media only screen and (max-width: 600px) {
     #header {
         background-image: linear-gradient(rgba(15, 17, 23, 0.7), rgba(15, 17, 23, 0.8)), url(images/phone-background.png);
+        /* Ensure background is visible on Safari iOS */
+        background-size: cover;
+        background-position: center center;
+        background-attachment: scroll; /* Important for Safari iOS */
+        background-repeat: no-repeat;
+        /* Fix for Safari viewport issues */
+        height: 100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+        /* Safari iOS specific fixes */
+        -webkit-background-size: cover;
+        -webkit-transform: translate3d(0,0,0);
+        /* Force hardware acceleration */
+        transform: translate3d(0,0,0);
     }
 
     /* Optimize particles for mobile performance */
     #particles-js {
         opacity: 0.7; /* Slightly reduced visibility on mobile */
+        /* Improve Safari performance */
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
     }
 
     .header-text {
-        margin-top: 170%;
+        /* Adjust positioning for better Safari compatibility */
+        margin-top: 30vh; /* Use viewport units instead of percentage */
+        /* Fallback for older Safari versions */
+        margin-top: 30%;
         font-size: 16px;
+        /* Ensure text doesn't get cut off in Safari */
+        padding: 0 20px;
+        /* Center positioning adjustments */
+        position: relative;
+        z-index: 10;
+        /* Safari text rendering improvements */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     .header-text h1 {
         font-size: 30px;
+        /* Better line spacing for Safari */
+        line-height: 1.3;
+        /* Prevent text from being too close to edges */
+        margin: 20px 0;
+    }
+
+    .header-text p {
+        /* Ensure subtitle is properly spaced */
+        margin-bottom: 10px;
     }
 
     nav .fas {
@@ -683,11 +714,19 @@ nav .fas {
         right: -200px;
         width: 200px;
         height: 100vh;
+        /* Safari mobile viewport fix */
+        min-height: 100vh;
+        max-height: 100vh;
         padding-top: 50px;
-        z-index: 2;
+        z-index: 1000; /* Higher z-index for Safari */
         transition: right 0.5s;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
         border-left: 1px solid rgba(99, 102, 241, 0.1); /* Very subtle border */
+        /* Safari optimizations */
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
 
     nav ul li {
@@ -786,34 +825,57 @@ nav .fas {
     .copyright {
         font-size: 14px;
     }
+}
 
-    /* Portfolio/Projects section mobile fixes */
-    .work-list {
-        grid-template-columns: 1fr; /* Single column on mobile */
-        grid-gap: 20px; /* Reduced gap for mobile */
-        margin-top: 30px;
+/* Safari iOS specific fixes */
+@supports (-webkit-appearance: none) and (stroke-color: transparent) {
+    @media only screen and (max-width: 600px) {
+        #header {
+            /* Force Safari to show background image */
+            background-image: linear-gradient(rgba(15, 17, 23, 0.7), rgba(15, 17, 23, 0.8)), url(images/phone-background.png) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-attachment: scroll !important;
+            /* Fix Safari viewport height issues */
+            height: 100vh !important;
+            min-height: 100vh !important;
+            /* Safari rendering optimization */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            perspective: 1000;
+        }
+        
+        .header-text {
+            /* Adjust for Safari's status bar and navigation */
+            margin-top: calc(30vh + env(safe-area-inset-top, 0px));
+            /* Additional padding for Safari */
+            padding-top: 20px;
+            /* Ensure proper positioning */
+            position: relative;
+            top: 0;
+        }
+        
+        #header .container {
+            /* Ensure container spans full viewport in Safari */
+            min-height: 100vh;
+            height: 100vh;
+            /* Fix Safari container positioning */
+            padding-top: env(safe-area-inset-top, 0px);
+        }
     }
+}
 
-    .layer {
-        padding: 0 20px; /* Reduced padding on mobile for more text space */
-        font-size: 13px; /* Slightly smaller font on mobile */
-        text-align: center; /* Ensure center alignment is maintained on mobile */
+/* iOS Safari landscape orientation fix */
+@media only screen and (max-width: 600px) and (orientation: landscape) {
+    .header-text {
+        margin-top: 15vh;
+        font-size: 14px;
     }
-
-    .layer h3 {
-        font-size: 16px; /* Adjust heading size for mobile */
-        margin-bottom: 15px;
-        line-height: 1.3;
-        text-align: center; /* Ensure project titles are centered on mobile */
-    }
-
-    .layer p {
-        font-size: 13px; /* Ensure readable text size on mobile */
-        line-height: 1.5;
-        /* Additional mobile-specific text constraints */
-        text-align: center; /* Keep centered alignment for job titles and descriptions */
-        overflow: hidden;
-        text-overflow: ellipsis;
+    
+    .header-text h1 {
+        font-size: 25px;
+        line-height: 1.2;
     }
 }
 
