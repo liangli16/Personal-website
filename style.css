@@ -313,6 +313,9 @@ nav ul li a:hover::after {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(99, 102, 241, 0.05); /* Very subtle border */
+    /* Ensure proper content containment */
+    min-height: 250px; /* Minimum height to accommodate content */
+    max-width: 100%; /* Prevent cards from exceeding container width */
 }
 
 .work:hover {
@@ -344,17 +347,32 @@ nav ul li a:hover::after {
     text-align: center;
     font-size: 14px;
     transition: height 0.5s;
+    /* Ensure proper text containment */
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .layer h3 {
     font-weight: 600;
     margin-bottom: 20px;
     color: #ffffff;
+    /* Ensure heading text wraps properly within card boundaries */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
 }
 
 .layer p {
     color: #e2e4ff;
     line-height: 1.6;
+    /* Ensure paragraph text wraps properly within card boundaries */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
 }
 
 .layer a {
@@ -767,6 +785,35 @@ nav .fas {
     
     .copyright {
         font-size: 14px;
+    }
+
+    /* Portfolio/Projects section mobile fixes */
+    .work-list {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-gap: 20px; /* Reduced gap for mobile */
+        margin-top: 30px;
+    }
+
+    .layer {
+        padding: 0 20px; /* Reduced padding on mobile for more text space */
+        font-size: 13px; /* Slightly smaller font on mobile */
+        text-align: center; /* Ensure center alignment is maintained on mobile */
+    }
+
+    .layer h3 {
+        font-size: 16px; /* Adjust heading size for mobile */
+        margin-bottom: 15px;
+        line-height: 1.3;
+        text-align: center; /* Ensure project titles are centered on mobile */
+    }
+
+    .layer p {
+        font-size: 13px; /* Ensure readable text size on mobile */
+        line-height: 1.5;
+        /* Additional mobile-specific text constraints */
+        text-align: center; /* Keep centered alignment for job titles and descriptions */
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
