@@ -749,17 +749,17 @@ nav .fas {
     }
 
     .header-text {
-        /* Adjust positioning for better Safari compatibility */
-        margin-top: 30vh; /* Use viewport units instead of percentage */
-        /* Fallback for older Safari versions */
-        margin-top: 30%;
+        /* Adjust positioning for mobile devices - moved lower to ~70% from top */
+        margin-top: 50vh; /* Use viewport units instead of percentage */
+        /* Fallback for older mobile browsers */
+        margin-top: 50%;
         font-size: 16px;
-        /* Ensure text doesn't get cut off in Safari */
+        /* Ensure text doesn't get cut off on mobile */
         padding: 0 20px;
         /* Center positioning adjustments */
         position: relative;
         z-index: 10;
-        /* Safari text rendering improvements */
+        /* Mobile text rendering improvements */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
@@ -923,8 +923,8 @@ nav .fas {
         }
         
         .header-text {
-            /* Adjust for Safari's status bar and navigation */
-            margin-top: calc(30vh + env(safe-area-inset-top, 0px));
+            /* Adjust for Safari's status bar and navigation - moved lower to ~70% from top */
+            margin-top: calc(50vh + env(safe-area-inset-top, 0px));
             /* Additional padding for Safari */
             padding-top: 20px;
             /* Ensure proper positioning */
@@ -945,7 +945,7 @@ nav .fas {
 /* iOS Safari landscape orientation fix */
 @media only screen and (max-width: 600px) and (orientation: landscape) {
     .header-text {
-        margin-top: 15vh;
+        margin-top: 25vh; /* Adjusted for landscape mode to maintain lower positioning */
         font-size: 14px;
     }
     
