@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Journal — Liang Li</title>
+<meta name="description" content="Essays by Liang Li on physical AI, computer vision, semiconductors, and judgment." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#efe8da;--cream2:#f4efe4;--ink:#2a2218;--ink-soft:#473c2c;--muted:#736755;--brown:#8a6b45;--brown-deep:#6f5536;--taupe:#c5b69d;
+    --line:rgba(52,40,24,.18);--frame:rgba(46,36,22,.42);--hl:#ffdd49;
+    --serif:"Newsreader",Georgia,serif;--body:"Source Serif 4",Georgia,serif;--sans:"Hanken Grotesk",system-ui,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);background:var(--cream);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+  .abar{position:sticky;top:0;z-index:20;background:rgba(239,232,218,.9);backdrop-filter:blur(8px);box-shadow:0 14px 34px -24px rgba(46,34,18,.4);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+  .abar .brand{font-family:var(--serif);font-weight:600;font-size:21px}
+  .back{font-size:15px;color:var(--muted)} .back:hover{color:var(--ink)}
+
+  .jwrap{max-width:1180px;margin:0 auto;padding:64px 30px 40px}
+  .jhead{text-align:center;max-width:680px;margin:0 auto 30px}
+  .eyebrow{display:inline-block;font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brown);border:1px solid rgba(138,107,69,.55);border-radius:30px;padding:8px 18px 7px;margin-bottom:22px}
+  h1.title{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5vw,54px);line-height:1.1;letter-spacing:-.015em}
+  .sub{color:var(--muted);font-size:20px;margin-top:14px}
+
+  .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:36px 0 10px}
+  .chip{font-family:var(--sans);font-weight:600;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:9px 18px;background:none;cursor:pointer;transition:.2s}
+  .chip:hover{border-color:var(--brown);color:var(--brown)}
+  .chip.on{background:var(--brown);border-color:var(--brown);color:#fbf7ee}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:36px}
+  .entry{display:block;border:1px solid var(--frame);background:var(--cream2);padding:14px 16px 24px;color:var(--ink);transition:.28s}
+  .entry:hover{transform:translateY(-3px);box-shadow:0 26px 56px -30px rgba(46,34,18,.5)}
+  .entry.hide{display:none}
+  .winbar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;font-family:var(--sans);font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:14px}
+  .dots{display:flex;gap:6px} .dots i{width:9px;height:9px;border-radius:50%;border:1px solid var(--muted)}
+  .feat{display:flex;align-items:center;gap:12px;justify-content:center}
+  .feat::before,.feat::after{content:"";flex:1;border-top:1px dotted currentColor;opacity:.5}
+  .no{justify-self:end}
+  .thumb{border:1px solid var(--frame);overflow:hidden;aspect-ratio:16/10}
+  .thumb img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.07) brightness(1.03);transition:filter .45s ease}
+  .entry:hover .thumb img{filter:saturate(1.05) contrast(1.03)}
+  .ebody{padding:18px 4px 0}
+  .emeta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:12px}
+  .entry h3{font-family:var(--serif);font-weight:500;line-height:1.18;letter-spacing:-.012em;font-size:24px}
+  .ttl{background-image:linear-gradient(transparent 8%,var(--hl) 8%,var(--hl) 90%,transparent 90%);
+    background-size:0% 100%;background-repeat:no-repeat;
+    -webkit-box-decoration-break:clone;box-decoration-break:clone;
+    transition:background-size .4s cubic-bezier(.2,.8,.2,1);padding:0 3px;margin:0 -3px}
+  .entry:hover .ttl{background-size:100% 100%}
+  .dek{font-style:italic;color:var(--muted);font-size:17px;margin-top:10px}
+
+  .empty{display:none;text-align:center;color:var(--muted);font-style:italic;font-size:19px;padding:60px 0 20px}
+  .empty.show{display:block}
+
+  footer{margin-top:70px;padding:34px 24px;text-align:center;color:var(--muted);font-size:12.5px;font-family:var(--sans);letter-spacing:.08em}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}.ttl{transition:none}}
+</style>
+</head>
+<body>
+  <div class="abar">
+    <a class="back" href="index.html">&larr; Home</a>
+    <a class="brand" href="index.html">Liang Li</a>
+  </div>
+
+  <div class="jwrap">
+    <div class="jhead">
+      <span class="eyebrow">Writing</span>
+      <h1 class="title">The Journal</h1>
+      <p class="sub">Notes on hardware, intelligence, and judgment.</p>
+    </div>
+
+    <div class="chips" role="tablist" aria-label="Filter by category">
+      <button class="chip on" data-cat="all">All</button>
+      <button class="chip" data-cat="ai-robotics">AI &amp; Robotics</button>
+      <button class="chip" data-cat="semis-infra">Semiconductors &amp; Infra</button>
+      <button class="chip" data-cat="thoughts-misc">Thoughts &amp; Misc</button>
+    </div>
+
+    <div class="grid" id="grid">
+
+      <a class="entry" data-cat="ai-robotics" href="post-ai-tutor.html">
+        <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. 003]</span></div>
+        <div class="thumb"><img alt="Johannes Vermeer, The Astronomer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Johannes_Vermeer_-_The_Astronomer_-_WGA24685.jpg?width=1000"></div>
+        <div class="ebody">
+          <div class="emeta"><span>AI &amp; Robotics</span><span>4 min read</span></div>
+          <h3><span class="ttl">How I accidentally became an AI tutor</span></h3>
+          <p class="dek">On building one small tool, and the brilliant people it turned out to help.</p>
+        </div>
+      </a>
+
+      <a class="entry" data-cat="thoughts-misc" href="post-zerotoone.html">
+        <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. 002]</span></div>
+        <div class="thumb"><img alt="Caspar David Friedrich, Wanderer above the Sea of Fog" src="https://commons.wikimedia.org/wiki/Special:FilePath/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg?width=1000"></div>
+        <div class="ebody">
+          <div class="emeta"><span>Thoughts &amp; Misc</span><span>5 min read</span></div>
+          <h3><span class="ttl">Monopoly isn't a dirty word</span></h3>
+          <p class="dek">Three ideas from Zero to One — on competition, two kinds of optimists, and why a friend of mine quit a startup.</p>
+        </div>
+      </a>
+
+
+      <a class="entry" data-cat="semis-infra" href="post-buildout.html">
+        <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. 001]</span></div>
+        <div class="thumb"><img alt="Pieter Bruegel the Elder, The Tower of Babel" src="https://commons.wikimedia.org/wiki/Special:FilePath/Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project_-_edited.jpg?width=1000"></div>
+        <div class="ebody">
+          <div class="emeta"><span>Semiconductors &amp; Infra</span><span>6 min read</span></div>
+          <h3><span class="ttl">All-you-can-eat compute</span></h3>
+          <p class="dek">Arguments with a chip investor: the monopoly that forgot to charge more, and whose robots get to learn.</p>
+        </div>
+      </a>
+
+
+    </div>
+    <p class="empty" id="empty">Nothing here yet — the first one is on its way.</p>
+  </div>
+
+  <footer>&copy; Liang Li</footer>
+
+<script>
+  const chips=[...document.querySelectorAll('.chip')];
+  const entries=[...document.querySelectorAll('.entry')];
+  const empty=document.getElementById('empty');
+  chips.forEach(c=>c.addEventListener('click',()=>{
+    chips.forEach(x=>x.classList.toggle('on',x===c));
+    const cat=c.dataset.cat;let shown=0;
+    entries.forEach(e=>{
+      const show=cat==='all'||e.dataset.cat===cat;
+      e.classList.toggle('hide',!show);if(show)shown++;
+    });
+    empty.classList.toggle('show',shown===0);
+  }));
+</script>
+</body>
+</html>

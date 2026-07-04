@@ -1,229 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Porfolio Website</title>
-    <link href="https://fonts.cdnfonts.com/css/br-segma" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/noto-sans-devanagari" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/7b386abee7.js" crossorigin="anonymous"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Liang Li — At the edge of hardware and intelligence</title>
+<meta name="description" content="Liang Li — engineer from ASML's electron-optics frontier, building and writing at the edge of physical AI. Essays on robotics, computer vision, semiconductors, and AI infrastructure." />
+<meta property="og:title" content="Liang Li — At the edge of hardware and intelligence" />
+<meta property="og:description" content="Building and writing at the edge of physical AI." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://liang-li.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#efe8da; --cream2:#f4efe4; --ink:#2a2218; --ink-soft:#473c2c;
+    --muted:#736755; --brown:#8a6b45; --brown-deep:#6f5536; --taupe:#c5b69d;
+    --line:rgba(52,40,24,.18); --frame:rgba(46,36,22,.42); --hl:#ffdd49;
+    --serif:"Newsreader", Georgia, serif;
+    --body:"Source Serif 4", Georgia, serif;
+    --sans:"Hanken Grotesk", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--cream);color:var(--ink);line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 30px}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  /* paper grain */
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;opacity:.22;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.5'/></svg>")}
+
+  /* ---------- nav: no divider, floats over the page ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:40;transition:background .35s ease, box-shadow .35s ease}
+  nav .bar{max-width:1180px;margin:0 auto;padding:22px 30px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:.01em;color:#f6efe0;transition:color .35s ease}
+  .nav-links{display:flex;align-items:center;gap:28px;font-size:16.5px}
+  .nav-links a{color:rgba(246,239,224,.88);transition:color .25s} .nav-links a:hover{color:#fff}
+  nav.scrolled{background:rgba(239,232,218,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 14px 34px -22px rgba(46,34,18,.4)}
+  nav.scrolled .brand{color:var(--ink)} nav.scrolled .brand em{color:var(--brown)}
+  nav.scrolled .nav-links a{color:var(--ink-soft)} nav.scrolled .nav-links a:hover{color:var(--ink)}
+
+  /* ---------- hero: full-bleed, parallax ---------- */
+  .hero{position:relative;height:100vh;min-height:600px;overflow:hidden;
+    display:flex;align-items:center;
+    background:linear-gradient(180deg,#2b4a86,#6b86b8 55%,#cdbba0)}
+  .hero img.bg{position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;will-change:transform}
+  .hero .scrim{position:absolute;inset:0;
+    background:linear-gradient(92deg,rgba(20,16,10,.52) 0%,rgba(20,16,10,.28) 38%,transparent 62%),
+      linear-gradient(180deg,rgba(15,22,42,.3) 0%,transparent 26%,transparent 66%,rgba(36,30,20,.4) 100%)}
+  .hero .h-inner{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto;padding:0 30px;text-align:left}
+  .hero .h-inner > *{max-width:13.5em}
+  .hero h1{font-family:var(--serif);font-weight:500;color:#fbf7ee;line-height:1.03;letter-spacing:-.01em;font-size:clamp(42px,7vw,94px);font-optical-sizing:auto;text-shadow:0 2px 26px rgba(10,15,30,.42)}
+  .hero h1.greet .nm{font-style:italic;color:#f1e8d6}
+  .hero h1.greet .w{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(16px);animation:inksettle 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero h1.greet .w:nth-child(1){animation-delay:.15s}
+  .hero h1.greet .w:nth-child(2){animation-delay:.4s}
+  .hero h1.greet .w:nth-child(3){animation-delay:.7s}
+  @keyframes inksettle{to{opacity:1;filter:blur(0);transform:none}}
+  @media (prefers-reduced-motion:reduce){.hero h1.greet .w{animation:none;opacity:1;filter:none;transform:none}}
+  .hero p{margin:24px 0 0;color:#f3ecdd;font-size:clamp(16px,1.8vw,18.5px);text-shadow:0 1px 14px rgba(10,15,30,.5)}
+  .scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:rgba(246,239,224,.75);font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.2em}
+
+  section{padding:96px 0}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brown);border:1px solid rgba(138,107,69,.55);border-radius:30px;padding:8px 18px 7px;margin-bottom:22px;font-family:var(--sans)}
+  h2.title{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4.8vw,52px);line-height:1.06;letter-spacing:-.01em;font-optical-sizing:auto}
+  .sub{color:var(--muted);font-size:19px;margin-top:14px}
+
+  /* about */
+  .about{display:grid;grid-template-columns:.72fr 1.28fr;gap:64px;align-items:center}
+  .about .aimg{order:1} .about .acopy{order:2}
+  .about .acopy p{font-size:18px;color:var(--ink-soft);margin-top:16px;max-width:34em}
+  .about .acopy p em{color:var(--brown-deep)}
+  .about .acopy .hlt{background-image:linear-gradient(transparent 58%,var(--hl) 58%,var(--hl) 94%,transparent 94%);padding:0 2px;margin:0 -2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .aimg{position:relative;border:1px solid var(--line);background:#d8cdb8;aspect-ratio:4/5;overflow:hidden}
+  .aimg img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+  .aimg:hover img{transform:scale(1.03)}
+  
+
+  /* now strip */
+
+  /* blog */
+  .blog{background:var(--cream2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+  .tabs{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);margin:52px 0 0;text-align:left}
+  .tablist{display:flex;gap:30px;flex-wrap:wrap}
+  .tab{font-family:var(--serif);font-size:21px;font-weight:500;color:var(--taupe);background:none;border:none;cursor:pointer;padding:0 0 16px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.2s}
+  .tab:hover{color:var(--muted)} .tab.active{color:var(--ink);border-bottom-color:var(--brown)}
+  .tright{display:flex;align-items:center;gap:22px;padding-bottom:12px}
+  .allessays{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brown-deep);border-bottom:1px solid rgba(138,107,69,.55);padding-bottom:2px;transition:.25s}
+  .allessays:hover{color:var(--ink);border-color:var(--ink)}
+  .arrows{display:flex;gap:10px}
+  .arr{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;display:grid;place-items:center;color:var(--muted);transition:.2s;font-size:16px}
+  .arr.on{background:var(--brown);border-color:var(--brown);color:#fbf7ee} .arr:hover{border-color:var(--brown)}
+  .panel{display:grid;grid-template-columns:1.05fr 1fr;border:1px solid var(--line);border-top:none;background:var(--cream);height:440px;text-align:left}
+  .art{position:relative}
+  .art img{position:absolute;inset:0}
+  .art{position:relative;overflow:hidden;background:#d8cdb8}
+  .art img{width:100%;height:100%;object-fit:cover;filter:sepia(.42) saturate(.78) contrast(1.04) brightness(1.02);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+  .panel:hover .art img{transform:scale(1.03)}
+  .art::before{content:"";position:absolute;inset:0;background:rgba(120,92,52,.12);mix-blend-mode:multiply;z-index:1;pointer-events:none}
+  .art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,var(--cream) 99%);z-index:2;pointer-events:none}
+  .pcopy{padding:48px 52px;align-self:center}
+  .pcopy h3{font-family:var(--serif);font-size:31px;font-weight:500;letter-spacing:-.012em;margin-bottom:16px}
+  .pcopy .lead{font-size:19px;color:var(--ink-soft);line-height:1.55;max-width:30em}
+  .pcopy .lead em{color:var(--brown-deep)}
+
+
+
+  /* work */
+  .work .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:40px}
+  .wcard.off{display:none}
+  .wcard{border:1px solid var(--frame);background:var(--cream2);padding:34px 34px 30px;transition:.28s;display:flex;flex-direction:column}
+  .wcard:hover{transform:translateY(-3px);box-shadow:0 26px 56px -30px rgba(46,34,18,.5)}
+  .wcard .wno{font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:16px;display:flex;justify-content:space-between}
+  .wcard .wno .tag{color:var(--brown)}
+  .wcard h3{font-family:var(--serif);font-size:25px;font-weight:500;letter-spacing:-.01em;line-height:1.18}
+  .wcard p{font-size:16.5px;color:var(--ink-soft);margin-top:12px;flex:1}
+  .wcard p em{color:var(--brown-deep)}
+  .wcard .wlink{margin-top:20px;font-family:var(--sans);font-size:13px;letter-spacing:.08em;color:var(--brown)}
+  .wcard .wlink:hover,.wcard:hover .wlink{color:var(--ink)}
+
+  /* work toggle + papers list */
+  .wbar{display:flex;align-items:center;justify-content:space-between;margin-top:28px;flex-wrap:wrap;gap:16px}
+  .wswitch{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:30px;padding:4px;background:var(--cream2)}
+  .wtab{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-radius:30px;padding:10px 22px 9px;cursor:pointer;transition:.25s}
+  .wtab.active{background:var(--brown);color:#fbf7ee}
+  .plist{margin-top:42px;border-top:1px solid var(--line)}
+  .paper{display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:baseline;padding:26px 6px;border-bottom:1px solid var(--line);transition:.2s}
+  .paper:hover{background:var(--cream)}
+  .paper .pno{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.1em;color:var(--brown)}
+  .paper .pt{font-family:"Newsreader",Georgia,serif;font-style:italic;font-size:22px;line-height:1.28}
+  .paper .pmeta{font-family:var(--sans);font-weight:500;font-size:12px;color:var(--muted);white-space:nowrap}
+
+  /* contact (single closing section) */
+  .contact{text-align:center}
+  .contact h2{font-family:var(--serif);font-weight:500;font-size:clamp(40px,6.6vw,80px);line-height:1.04;letter-spacing:-.015em;font-style:italic}
+  .contact p{margin:20px auto 34px;max-width:32em;color:var(--muted);font-size:18px}
+  .icons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .icons a{width:52px;height:52px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--ink-soft);transition:.25s}
+  .icons a:hover{background:var(--brown);border-color:var(--brown);color:#fbf7ee;transform:translateY(-2px)}
+  .icons svg{width:21px;height:21px;fill:currentColor}
+
+  footer{padding:34px 0 40px;text-align:center;color:var(--muted);font-family:var(--sans);font-weight:500;font-size:12.5px;letter-spacing:.06em}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:.8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:880px){
+    body{font-size:16.5px}
+    .nav-links{gap:14px;font-size:15px}.nav-links a:nth-child(3){display:none}
+    .hero{height:88vh}
+    .hp{width:98px;height:124px}
+    .about{grid-template-columns:1fr;gap:32px}.aimg{max-width:380px}.about .aimg{order:2}.about .acopy{order:1}
+    .panel{grid-template-columns:1fr}.art{height:280px}.art::after{background:linear-gradient(180deg,transparent 72%,var(--cream) 99%)}
+    .pcopy{padding:34px 28px}
+    .wgrid{grid-template-columns:1fr}
+    .paper{grid-template-columns:auto 1fr;gap:14px}.paper .pmeta{grid-column:2}
+    .tablist{gap:20px}.tab{font-size:19px}
+    .tright{gap:14px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}.reveal{opacity:1;transform:none}.ttl{transition:none}.hero img.bg{transform:none!important}}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+</style>
 </head>
 <body>
-<div id="header">
-    <div class="container">
-        <nav>
-            <img src="images/logo.png" class="logo">
-            <ul id="sidemenu">
-                <li><a href="#header">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <i class="fas fa-times" onclick="closemenu()"></i>
-            </ul>
-            <i class="fas fa-bars" onclick="openmenu()"></i>
-        </nav>
-        <div class="header-text">
-            <p>Engineer | Scientist</p>
-            <h1>Hi, I'm <span>Liang</span><br>Based in Sunnyvale</h1>
+
+<nav id="nav">
+  <div class="bar">
+    <a href="#" class="brand">Liang Li</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="writing.html">Blog</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="hero">
+  <img class="bg" id="herobg" alt="Liang Li — classical oil painting"
+    src="assets/hero-painting.jpg" />
+  <div class="scrim"></div>
+  <div class="h-inner">
+    <h1 class="greet"><span class="w">Hi,</span> <span class="w">I&rsquo;m</span> <span class="w nm">Liang&nbsp;Li.</span></h1>
+  </div>
+  <span class="scrollcue">SCROLL</span>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about">
+      <div class="acopy reveal">
+        <span class="eyebrow">About</span>
+        <h2 class="title">An engineer at the edge of two worlds.</h2>
+        <p>My name is Liang Li. I live in Sunnyvale, California, and I'm happiest where equations meet execution — the seam where something derived on paper has to survive contact with real hardware. The curiosity runs wide: new chips, quantum computing, robots that are finally learning to see.</p>
+        <p>Since 2022 that curiosity has had a home at <span class="hlt">ASML</span>, where I build electron-beam inspection tools. The road there ran through a quantum-photonics lab at <span class="hlt">UC&nbsp;Davis</span>, a graduate fellowship at <span class="hlt">Penn</span>, and a summer at <span class="hlt">Fermilab</span> building particle-detector instrumentation — different fields, same habit of pointing precise instruments at hard problems.</p>
+        <p>Off the clock, you'll find me at a ping-pong table, playing guitar, or wandering museums in whichever city I'm in — which is probably where this site's taste for old paintings comes from.</p>
+      </div>
+      <figure class="aimg reveal">
+        <img id="aboutimg" alt="Liang Li"
+          src="assets/portrait-about.jpg" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="blog" id="blog">
+  <div class="wrap">
+    <span class="eyebrow reveal">Blog</span>
+    <div class="tabs reveal">
+      <div class="tablist" role="tablist">
+        <button class="tab active" data-i="0">AI &amp; Robotics</button>
+        <button class="tab" data-i="1">Semiconductors &amp; Infra</button>
+        <button class="tab" data-i="2">Thoughts &amp; Misc</button>
+      </div>
+      <div class="tright">
+        <a class="allessays" href="writing.html">All essays &rarr;</a>
+        <div class="arrows">
+          <button class="arr" id="prev" aria-label="Previous">‹</button>
+          <button class="arr on" id="next" aria-label="Next">›</button>
         </div>
+      </div>
     </div>
-</div>
+    <div class="panel reveal">
+      <div class="art"><img id="art" alt="" /></div>
+      <div class="pcopy">
+        <h3 id="ph-title"></h3>
+        <p class="lead" id="lead"></p>
+      </div>
+    </div>
 
-<!-- ----------------about------------------ -->
-<div id="about">
-    <div class="container">
-        <div class="row">
-            <div class="about-col-1">
-                <img src="images/bg2.jpg">
-            </div>
-            <div class="about-col-2">
-                <h1 class="sub-title">About Me</h1>
-                <p>I'm <span style="display:inline; color: #e85d04;">Liang Li</span>, an engineer passionate about <span style="display:inline; color: #e85d04;">technologies</span> and <span style="display:inline; color: #e85d04;">Science</span>. Ranging from emerging semicondutor chips to new quantum computing breaktrhoughs, I thrive where equations meet execution. During leisure time, you may find me in sport clubs practicing Ping-pong, at home playing my guitar, or exploring musuems in differnet cities. I'm currently based in Sunnyvale, CA.<br><br>I joined <span>ASML</span> in 2022 as an Engineer. Before that, I interned as a Research Assistant at Fermilab, as a graduate student fellow at University of Pennsylvannia, and as a research assistant at UC Davis.
-                </p>
+  </div>
+</section>
 
-                <div class="tab-titles">
-                    <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                    <p class="tab-links" onclick="opentab('experience')">Experience</p>
-                    <p class="tab-links" onclick="opentab('education')">Education</p>
-                    <p class="tab-links" onclick="opentab('moreover')">Moreover</p>
-                </div>
-                <div class="tab-contents active-tab" id="skills">
-                    <ul>
-                        <li><span>Hardware Skills</span><br>Electron Optics (e-beam), Confocual spectroscopy, Fiber Optics</li>
-                        <li><span>Programming Skills</span><br>Python, C, MATLAB</li>
-                        <li><span>Data Analytics</span><br>Python, SQL, Excel</li>
-                        <li><span>Simulation</span><br>Ansys Lumerical</li>
-                        <li><span>UI / UX</span><br>HTML, CSS</li>
-                    </ul>
-                </div>
-                <div class="tab-contents" id="experience">
-                    <ul>
-                        <li><span>2022 - Present</span><br>Electron Optics Engineer at <span style="display:inline; color: #00a6fb;">ASML</span></li>
-                        <li><span>2021 - 2022</span><br>Graduate Student Fellow at <span style="display:inline; color: #00a6fb;">University of Pennsylvannia</span></li>
-                        <li><span>2019</span><br>Research Assistant at <span style="display:inline; color: #00a6fb;">Fermilab</span></li>
-                        <li><span>2018 - 2020</span><br>Research Assistant at <span style="display:inline; color: #00a6fb;">UC Davis</span></li>
-                    </ul>
-                </div>
-                <div class="tab-contents" id="education">
-                    <ul>
-                        <li><span>2022</span><br>MSE <span style="display:inline; color: #00a6fb;">Nanotechnology</span> from University of Pennsylvannia</li>
-                        <li><span>2020</span><br>BS <span style="display:inline; color: #00a6fb;">Applied Physics</span> from Univeristy of California, Davis</li>
-                    </ul>
-                </div>
-                <div class="tab-contents" id="moreover">
-                    <ul>
-                        <li><span>2021 - 2022</span><br><span style="display:inline; color: #00a6fb;">President</span>, Nanoquackers at University of Pennsylvannia</li>
-                        <li><span>2016 - 2018</span><br><span style="display:inline; color: #00a6fb;">Writer</span>, Chinese Student and Scholar Association at UC Davis</li>
-                    </ul>
-                </div>
-            </div>
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Selected Work</span>
+      <h2 class="title">Things I've shipped</h2>
+      <p class="sub">Hardware, software, and the seam between them.</p>
+      <div class="wbar">
+        <div class="wswitch" role="tablist">
+          <button class="wtab active" data-w="projects">Projects</button>
+          <button class="wtab" data-w="papers">Papers</button>
         </div>
-    </div>
-</div>
-
- <!-- -----------Portfolio-------------- -->
- <div id="portfolio">
-    <div class="container">
-        <h1 class="sub-title">My Projects</h1>
-        <div class="work-list">
-            <div class="work">
-                <img src="images/work-1.png">
-                <div class="layer">
-                    <h3>SEM Detector Design Improvement</h3>
-                    <p>Design Engineer<br><br>Designed and conducted experiments that solve detector charging problem. The new detector increases the throughput (TPT) by 40% for tools in TSMC.</p>
-                    <!-- <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a> -->
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/work-2.png">
-                <div class="layer">
-                    <h3>Image Shift Algorithm</h3>
-                    <p>Design Engineer<br><br>Developed an algorithm that catches the image shift that quantifies mechanical module stabilities of SEM, which locates the key factors that affect resolution and completed the feasibility study of metrology improvement.</p>
-                    <!-- <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a> -->
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/work-3.png">
-                <div class="layer">
-                    <h3>Experiment Pipeline Optimization</h3>
-                    <p>Graduate Student Fellow<br><br>Refined the experiment pipeline of quantum dots synthesis. The refined experiment requies less time and results better quantum dots. The new pipeline was added to the core course (ESE 536) of Nanotechnology program as a course project.</p>
-                    <!-- <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a> -->
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/work-4.png">
-                <div class="layer">
-                    <h3>Quid Pro Quo</h3>
-                    <p>Software Engineer<br><br>Created a suit of user-friendly desktop applications to display and illustrate quantum optics experiments. The project won Qiskit Summer Jam Hackathon (California division).</p>
-                    <!-- <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a> -->
-                </div>
-            </div>
+        <div class="arrows" id="warrows">
+          <button class="arr" id="wprev" aria-label="Previous projects">‹</button>
+          <button class="arr on" id="wnext" aria-label="Next projects">›</button>
         </div>
-        <a href="#" class="btn">See more</a>
+      </div>
     </div>
- </div>
-
-<!-- --------------publications------------ -->
- <div id="services">
-    <div class="container">
-        <h1 class="sub-title">My Publications</h1>
-        <div class="services-list">
-            <div>
-                <!-- <i class="fa-solid fa-code"></i> -->
-                <h2>ICECAP: a 3-in-1 integrated cryogenic system for emission, collection and photon-detection from near infrared quantum nanophotonic devices</h2>
-                <p>Co-author<br><br>2024</p>
-                <a href="https://arxiv.org/html/2401.10509v1"><i class="fa-solid fa-arrow-up-right-from-square"></i>Learn more</a>
-            </div>
-            <div>
-                <!-- <i class="fa-solid fa-crop-simple"></i> -->
-                <h2>Quantum photonics in triangular-cross-section nanodevices in silicon carbide<br><br></h2>
-                <p>Co-author<br><br>2021</p>
-                <a href="https://arxiv.org/abs/2012.02350"><i class="fa-solid fa-arrow-up-right-from-square"></i>Learn more</a>
-            </div>
-        </div>
-        <a href="#" class="btn">See more</a>
+    <div class="wgrid" id="wprojects">
+      <div class="wcard reveal">
+        <div class="wno"><span>[W. 01]</span><span class="tag">PRODUCT</span></div>
+        <h3>Virtuoso Ads</h3>
+        <p>An AI ad-creative tool integrating LLM and image-generation APIs — designed, built, and shipped end-to-end as a solo developer. My crash course in what it takes to turn a model into a product someone will actually use.</p>
+        <a class="wlink" href="https://www.youtube.com/watch?v=I37lXVABuSo" target="_blank" rel="noopener">Watch the demo &rarr;</a>
+      </div>
+      <div class="wcard reveal">
+        <div class="wno"><span>[W. 02]</span><span class="tag">DEVELOPER EDUCATION</span></div>
+        <h3>Quid Pro Quo</h3>
+        <p>An interactive learning app that teaches quantum-computing concepts through hands-on exercises on IBM's Qiskit SDK. Winner of the Qiskit Summer Jam hackathon — and my first taste of building for developers rather than end users.</p>
+        <a class="wlink" href="https://www.hackerearth.com/challenges/hackathon/qiskit-community-summer-jam-california/dashboard/c446276/submission/quid-pro-quo/" target="_blank" rel="noopener">See the submission &rarr;</a>
+      </div>
     </div>
- </div>
-
-<!-- ---------------contact--------------- -->
- <div id="contact">
-    <div class="container">
-        <div class="row">
-            <div class="contact-left">
-                <h1 class="sub-title">Contact Me</h1>
-                <p><i class="fa-solid fa-envelope"></i>liliang11112222@gmail.com</p>
-                <div class="social-icons">
-                    <a href="https://www.linkedin.com/in/liang-li-583abb143/"><i class="fa-brands fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="contact-right">
-                <form name="submit-to-google-sheet">
-                    <input type="text" name="Name" placeholder="Your Name" required>
-                    <input type="email" name="Email" placeholder="Your email" required>
-                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
-                    <button type="submit" class="btn btn2">Submit</button>
-                </form>
-                <span id="msg"></span>
-            </div>
-        </div>
+    <div class="plist" id="wpapers">
+      <a class="paper" href="https://arxiv.org/abs/2401.10509" target="_blank" rel="noopener">
+        <span class="pno">[P. 01]</span>
+        <span class="pt">ICECAP: a 3-in-1 integrated cryogenic system for emission, collection and photon-detection from near infrared quantum nanophotonic devices</span>
+        <span class="pmeta">Coauthor · arXiv · 2024</span>
+      </a>
+      <a class="paper" href="https://arxiv.org/abs/2012.02350" target="_blank" rel="noopener">
+        <span class="pno">[P. 02]</span>
+        <span class="pt">Quantum photonics in triangular-cross-section nanodevices in silicon carbide</span>
+        <span class="pmeta">Coauthor · arXiv · 2021</span>
+      </a>
     </div>
-    <div class="copyright">
-        <p>Copytright @Liang Li</p>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap reveal">
+    <span class="eyebrow">Get in touch</span>
+    <h2>Let's talk.</h2>
+    <p>Building developer tools or community for physical AI, comparing notes on robots and semiconductors, or just saying hello — my inbox is open, in English or Chinese.</p>
+    <div class="icons">
+      <a href="mailto:liangli.careers@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2v.51l-8 5.33L4 6.51V6h16zM4 18V8.92l7.45 4.97a1 1 0 0 0 1.1 0L20 8.92V18H4z"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/liangli98" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.75H5.67v8.59h2.67zM7 8.58a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.76v-4.71c0-2.52-1.34-3.69-3.13-3.69-1.45 0-2.1.8-2.46 1.36V9.75h-2.67c.04.75 0 8.59 0 8.59h2.67v-4.8c0-.26.02-.51.1-.7.19-.48.63-.98 1.37-.98.96 0 1.45.74 1.45 1.83v4.65h2.67z"/></svg>
+      </a>
+      <a href="https://github.com/liangli16" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@MikeLee_98" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42A2.5 2.5 0 0 0 2.42 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.42-4.81zM10 15.13V8.87L15.25 12 10 15.13z"/></svg>
+      </a>
     </div>
- </div>
+  </div>
+</section>
 
+<footer>© Liang Li</footer>
 
- <!-- ----------Script------------- -->
 <script>
-    var tablinks = document.getElementsByClassName("tab-links");
-    var tabcontents = document.getElementsByClassName("tab-contents");
+  const F='https://commons.wikimedia.org/wiki/Special:FilePath/';
+  const ORRERY=F+'Wright_of_Derby,_The_Orrery.jpg?width=1000';
+  const ART={
+    athens:F+'Raphael_School_of_Athens.jpg?width=1100',
+    adam:F+'Creation_of_Adam_Michelangelo.jpg?width=1100',
+    wanderer:F+'Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg?width=1100'
+  };
+  const TOPICS=[
+    {title:'AI & Robotics', art:ART.adam,
+     lead:'Robots are where semiconductors were decades ago: astonishing machines waiting for their developer ecosystem. I build hands-on demos, write about the friction a newcomer actually hits, and about when classical CV still beats deep learning. <em>The ecosystem, not the robot, is the product.</em>'},
+    {title:'Semiconductors & Infra', art:ART.athens,
+     lead:'The chips, the optics, the networks that quietly decide who wins. I trace value through the stack — HBM, optical interconnect, custom silicon — the same way I once traced electrons down a lens column. <em>Ignore the demo; follow the yield curve.</em>'},
+    {title:'Thoughts & Misc', art:ART.wanderer,
+     lead:'Books, essays, and the occasional detour with nothing technical about it. What I read, what I unlearn, and the judgment calls that never show up in a spec sheet. <em>The best ideas rarely stay in their lane.</em>'}
+  ];
 
-    function opentab(tabname){
-        for(tablink of tablinks){
-            tablink.classList.remove("active-link");
-        }
-        for(tabcontent of tabcontents){
-            tabcontent.classList.remove("active-tab");
-        }
-        event.currentTarget.classList.add("active-link");
-        document.getElementById(tabname).classList.add("active-tab");
-    }
+  /* ---------- topic panel ---------- */
+  let cur=0;
+  const tabs=[...document.querySelectorAll('.tab')];
+  function renderTopic(i){
+    cur=(i+TOPICS.length)%TOPICS.length;const d=TOPICS[cur];
+    tabs.forEach((t,k)=>t.classList.toggle('active',k===cur));
+    const a=document.getElementById('art');a.src=d.art;a.alt=d.title;
+    document.getElementById('ph-title').textContent=d.title;
+    document.getElementById('lead').innerHTML=d.lead;
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>renderTopic(+t.dataset.i)));
+  document.getElementById('prev').addEventListener('click',()=>renderTopic(cur-1));
+  document.getElementById('next').addEventListener('click',()=>renderTopic(cur+1));
+  renderTopic(0);
+
+  /* ---------- work: projects/papers toggle + project pager ---------- */
+  const wtabs=[...document.querySelectorAll('.wtab')];
+  const wproj=document.getElementById('wprojects');
+  const wpap=document.getElementById('wpapers');
+  const warrows=document.getElementById('warrows');
+  const wcards=[...wproj.querySelectorAll('.wcard')];
+  const PER=2; let wpage=0;
+  const pages=Math.ceil(wcards.length/PER);
+  if(pages<=1){warrows.style.display='none';}
+  function renderProjects(){
+    wcards.forEach((c,i)=>c.classList.toggle('off', Math.floor(i/PER)!==wpage));
+    document.getElementById('wprev').classList.toggle('on', wpage>0);
+    document.getElementById('wnext').classList.toggle('on', wpage<pages-1);
+  }
+  document.getElementById('wprev').addEventListener('click',()=>{wpage=(wpage-1+pages)%pages;renderProjects();});
+  document.getElementById('wnext').addEventListener('click',()=>{wpage=(wpage+1)%pages;renderProjects();});
+  function setWork(which){
+    wtabs.forEach(x=>x.classList.toggle('active',x.dataset.w===which));
+    wproj.style.display = which==='projects' ? 'grid' : 'none';
+    wpap.style.display  = which==='papers'   ? 'block' : 'none';
+    warrows.style.display = (which==='projects' && pages>1) ? 'flex' : 'none';
+  }
+  wtabs.forEach(t=>t.addEventListener('click',()=>setWork(t.dataset.w)));
+  function equalizeCards(){
+    wcards.forEach(c=>{c.classList.remove('off');c.style.minHeight='';});
+    const h=Math.max(...wcards.map(c=>c.offsetHeight));
+    wcards.forEach(c=>c.style.minHeight=h+'px');
+    renderProjects();
+  }
+  setWork('projects'); equalizeCards();
+  window.addEventListener('load',equalizeCards);
+  window.addEventListener('resize',()=>{clearTimeout(window.__weq);window.__weq=setTimeout(equalizeCards,180);});
+
+
+  /* ---------- image fallbacks until assets exist ---------- */
+  const COLE=F+'Cole_Thomas_The_Course_of_Empire_The_Arcadian_or_Pastoral_State_1836.jpg?width=2400';
+  const hb=document.getElementById('herobg');
+  hb.addEventListener('error',()=>{hb.src=COLE;hb.alt='Thomas Cole, The Arcadian or Pastoral State (1834)';},{once:true});
+  const ai=document.getElementById('aboutimg');
+  ai.addEventListener('error',()=>{
+    ai.src=ORRERY;
+    ai.alt='Joseph Wright of Derby, A Philosopher Lecturing on the Orrery';
+  },{once:true});
+
+  /* ---------- nav + hero parallax ---------- */
+  const nav=document.getElementById('nav');
+  const hero=document.getElementById('hero');
+  const herobg=document.getElementById('herobg');
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ticking=false;
+  function onScroll(){
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY;
+      nav.classList.toggle('scrolled', y > hero.offsetHeight - 90);
+      if(!reduceMotion && y < hero.offsetHeight){
+        herobg.style.transform=`translateY(${y*0.32}px)`;
+      }
+      ticking=false;
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3*0.07)+'s';io.observe(el)});
 </script>
-
-
-<script>
-    var sidemenu = document.getElementById("sidemenu");
-
-    function openmenu(){
-        sidemenu.style.right = "0";
-    }
-    function closemenu(){
-        sidemenu.style.right = "-200px";
-    }
-</script>
-
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyicol1CuqRAlPD_FT718AX4OAC6dFmPFko_QyuzFTOeZD-eknn_tCLxM4e_-uyQBqB/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-  
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            msg.innerHTML = "Message sent successfully"
-            setTimeout(function(){
-                msg.innerHTML = ""
-            },5000)
-            form.reset()
-        })
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
-
 </body>
 </html>
