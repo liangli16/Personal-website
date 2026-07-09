@@ -147,3 +147,25 @@ The homepage Blog section stays posts-free by design (emergences-style: blog liv
 - Journal categories: exactly three — AI & Robotics / Semiconductors & Infra / Thoughts & Misc (+ All chip). No "AI Events". Filter values must match card data-cat exactly: ai-robotics / semis-infra / thoughts-misc.
 - Selected Work (Jul 2026): exactly 2 projects — [W.01] Virtuoso Ads, [W.02] Quid Pro Quo — plus 2 papers. Sub-pixel CV card REMOVED (ASML-sensitive) and MuJoCo card REMOVED (not polished yet); may return later. Pager arrows auto-hide when pages<=1.
 - About layout: photo LEFT (.72fr, smaller) / text RIGHT (1.28fr) to alternate with the hero portrait (which sits right). Mobile: text first, photo below.
+- Post 4 (Jul 2026): post-no-deep-learning.html — "Why we didn't use deep learning", AI & Robotics, July 7 2026, [NO. 004], hero = Vermeer The Lacemaker (Commons hotlink, same pattern as Astronomer). The technical/judgment essay for the Roboflow DevAdvocate application. No ASML-proprietary details: approach described at edge-detection/filters/physics-model level only, numbers limited to the public resume set (10x, ~1 nm, 66%).
+
+## Publishing workflow (v3.0, Jul 2026) — IMPORTANT
+The journal is now data-driven. writing.html contains NO hardcoded cards; it renders from assets/posts.js at load.
+- assets/posts.js — single source of truth for the post list (newest first). Adding/editing a post's card = edit this file only.
+- assets/post.css — shared stylesheet for ALL post pages. Post pages link it; never add inline <style> to a post.
+- post-template.html — copy-and-fill skeleton with a checklist comment at the top.
+To publish: (1) copy post-template.html -> post-slug.html, fill in; (2) add one entry at top of POSTS in assets/posts.js; (3) commit both. Nothing else changes.
+Do NOT regress to hardcoded cards in writing.html.
+
+## Repo structure (v3.1, Jul 2026) — canonical
+/
+├── index.html          # home (hero, about, blog panel, work, contact)
+├── writing.html        # journal index — renders cards from assets/js/posts.js
+├── posts/              # one HTML file per essay + post-template.html
+├── assets/
+│   ├── css/post.css    # shared stylesheet for all post pages
+│   ├── js/posts.js     # POST MANIFEST — the only file to edit when publishing
+│   └── img/            # ALL images, local: heroes/thumbs (paintings), hero-painting.jpg, portrait-about.jpg, figures
+├── scripts/download-images.sh  # one-time fetch of the 6 classical paintings from Wikimedia
+└── .gitignore          # .DS_Store
+Rules: no Wikimedia hotlinks in content (local assets/img only; the two onerror fallbacks in index.html JS are the sole allowed remote refs). Posts live in posts/ and use ../ relative paths. Publishing = add posts/post-slug.html + one entry in assets/js/posts.js (+ hero image in assets/img/ if new).

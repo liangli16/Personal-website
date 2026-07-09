@@ -1,0 +1,54 @@
+<!--
+  NEW POST CHECKLIST (2 files, both additive):
+  1. Copy this file (inside posts/) to posts/post-your-slug.html and fill in:
+     <title>, meta description, category, ptitle, dek, pdate ("Month D, YYYY"), content.
+  2. Download the hero painting into assets/img/ (see scripts/download-images.sh
+     for the curl pattern; use Wikimedia Special:FilePath with ?width=1400),
+     then point the phero img at ../assets/img/your-image.jpg.
+  3. Open assets/js/posts.js and add one entry at the TOP of POSTS (instructions inside).
+  Rules: English only (no CJK in body), date format "Month D, YYYY",
+  numbering "no" = highest existing + 1, hero = classical painting, public domain.
+  Styles come from assets/post.css — do not add inline <style> blocks.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>POST TITLE — Liang Li</title>
+<meta name="description" content="ONE-SENTENCE TEASER (same as the dek)." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/post.css">
+</head>
+<body>
+  <div class="abar">
+    <a class="back" href="../writing.html">&larr; All writing</a>
+    <a class="brand" href="../index.html">Liang Li</a>
+  </div>
+  <article class="post-wrap">
+    <span class="cat">AI &amp; Robotics | Semiconductors &amp; Infra | Thoughts &amp; Misc — pick one</span>
+    <h1 class="ptitle">POST TITLE</h1>
+    <p class="dek">ONE-SENTENCE TEASER.</p>
+    <p class="pdate">Month D, YYYY</p>
+    <div class="phero"><img alt="PAINTER, PAINTING NAME" src="../assets/img/YOUR-IMAGE.jpg"></div>
+    <div class="content">
+
+<p>Opening paragraph.</p>
+
+<h4>Section header (short, opinionated phrase)</h4>
+<p>Body.</p>
+
+<h4>TL;DR</h4>
+<p>Optional bullets summary:</p>
+<ul>
+<li>Point one.</li>
+</ul>
+
+    </div>
+    <a class="pback" href="../writing.html">&larr; Back to all writing</a>
+  </article>
+  <footer>&copy; Liang Li</footer>
+</body>
+</html>

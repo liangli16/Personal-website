@@ -81,47 +81,27 @@
       <button class="chip" data-cat="thoughts-misc">Thoughts &amp; Misc</button>
     </div>
 
-    <div class="grid" id="grid">
+    <div class="grid" id="grid"></div>
 
-      <a class="entry" data-cat="ai-robotics" href="post-ai-tutor.html">
-        <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. 003]</span></div>
-        <div class="thumb"><img alt="Johannes Vermeer, The Astronomer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Johannes_Vermeer_-_The_Astronomer_-_WGA24685.jpg?width=1000"></div>
-        <div class="ebody">
-          <div class="emeta"><span>AI &amp; Robotics</span><span>4 min read</span></div>
-          <h3><span class="ttl">How I accidentally became an AI tutor</span></h3>
-          <p class="dek">On building one small tool, and the brilliant people it turned out to help.</p>
-        </div>
-      </a>
-
-      <a class="entry" data-cat="thoughts-misc" href="post-zerotoone.html">
-        <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. 002]</span></div>
-        <div class="thumb"><img alt="Caspar David Friedrich, Wanderer above the Sea of Fog" src="https://commons.wikimedia.org/wiki/Special:FilePath/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg?width=1000"></div>
-        <div class="ebody">
-          <div class="emeta"><span>Thoughts &amp; Misc</span><span>5 min read</span></div>
-          <h3><span class="ttl">Monopoly isn't a dirty word</span></h3>
-          <p class="dek">Three ideas from Zero to One — on competition, two kinds of optimists, and why a friend of mine quit a startup.</p>
-        </div>
-      </a>
-
-
-      <a class="entry" data-cat="semis-infra" href="post-buildout.html">
-        <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. 001]</span></div>
-        <div class="thumb"><img alt="Pieter Bruegel the Elder, The Tower of Babel" src="https://commons.wikimedia.org/wiki/Special:FilePath/Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project_-_edited.jpg?width=1000"></div>
-        <div class="ebody">
-          <div class="emeta"><span>Semiconductors &amp; Infra</span><span>6 min read</span></div>
-          <h3><span class="ttl">All-you-can-eat compute</span></h3>
-          <p class="dek">Arguments with a chip investor: the monopoly that forgot to charge more, and whose robots get to learn.</p>
-        </div>
-      </a>
-
-
-    </div>
     <p class="empty" id="empty">Nothing here yet — the first one is on its way.</p>
   </div>
 
   <footer>&copy; Liang Li</footer>
 
+<script src="assets/js/posts.js"></script>
 <script>
+  const grid=document.getElementById('grid');
+  const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  grid.innerHTML=POSTS.map(p=>`
+    <a class="entry" data-cat="${p.cat}" href="${p.href}">
+      <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="feat"><span>FEATURED</span></span><span class="no">[NO. ${p.no}]</span></div>
+      <div class="thumb"><img alt="${esc(p.imgAlt)}" src="${p.img}"></div>
+      <div class="ebody">
+        <div class="emeta"><span>${esc(p.catLabel)}</span><span>${esc(p.read)}</span></div>
+        <h3><span class="ttl">${esc(p.title)}</span></h3>
+        <p class="dek">${esc(p.dek)}</p>
+      </div>
+    </a>`).join('');
   const chips=[...document.querySelectorAll('.chip')];
   const entries=[...document.querySelectorAll('.entry')];
   const empty=document.getElementById('empty');

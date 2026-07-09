@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why we didn’t use deep learning — Liang Li</title>
+<meta name="description" content="The best-reviewed tool I shipped at ASML contains no neural network. That was the decision — and the reasoning generalizes." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/post.css">
+</head>
+<body>
+  <div class="abar">
+    <a class="back" href="../writing.html">&larr; All writing</a>
+    <a class="brand" href="../index.html">Liang Li</a>
+  </div>
+  <article class="post-wrap">
+    <span class="cat">AI &amp; Robotics</span>
+    <h1 class="ptitle">Why we didn’t use deep learning</h1>
+    <p class="dek">The best-reviewed tool I ever shipped is, under the hood, almost boring. That was the decision.</p>
+    <p class="pdate">July 7, 2026</p>
+    <div class="phero"><img alt="Johannes Vermeer, The Lacemaker" src="../assets/img/lacemaker.jpg"></div>
+    <div class="content">
+
+<p>When people hear that the most praised tool I shipped at ASML was a computer-vision system for aligning electron guns — a job that used to mean a trained eye, a glowing spot, and a lot of knob-turning — they usually assume the interesting part is the AI. Then I tell them there's no deep learning inside. No CNN, no training pipeline, no GPU. Edge detection, a stack of filters, a physics model. I've watched faces fall in real time.</p>
+<p>The tool cut alignment error by an order of magnitude and cycle time by two-thirds, and engineers actually liked using it — for internal tooling, the rarest metric there is. So consider this essay my defense of the boring pipeline: not a compromise I settled for, but the design I'd choose again. The instinct it pushes against — reach for the fanciest tool available — has quietly become the default instinct of the decade, and I think that default is wrong for most tools, most of the time.</p>
+
+<h4>The environment is part of the spec</h4>
+<p>Start where the tool actually lives. ASML is a hardware-heavy company; the computers in labs and factory bays are intranet-only machines with modest specs, and that's not stinginess — machines near production don't get to be exotic. Here's what I think most engineers get backwards: we treat the deployment environment as an afterthought, something IT will sort out later. For tooling, the environment is part of the spec — as binding as the accuracy target.</p>
+<p>A neural pipeline raises the compute floor of every machine it touches, and for this task the extra capability buys nothing the problem asked for. The rule-based pipeline runs on whatever is already bolted to the bench. A tool that needs a GPU is a tool that doesn't run in the room where the work happens — and a tool that doesn't run in that room isn't a tool. It's a demo.</p>
+
+<h4>A black box can't be signed</h4>
+<p>The second reason is the one I actually care about. ASML is a company of physicists, and explainability there is close to a religion. Could a CNN have matched or beaten my pipeline's accuracy? On paper, plausibly. I don't dispute it — I dispute that it matters. The moment the pipeline becomes a black box, every number it produces arrives with an asterisk: probably right, process unvouchable.</p>
+<p>The rule-based version inverts the trade. Control the lighting; fix the camera position and angle; once the environment stops being a variable, edge detection plus a handful of hand-tuned filters is almost hard-coded — in the good sense. Every filter has a name, every parameter has a reason, and the same input produces the same answer. People hear "hand-tuned" and think fragile. In a controlled environment it's the opposite: what I gave up in generality I got back as consistency, and in a factory, consistency is the feature. An anomaly you can't explain isn't a data point — it's an investigation. <em>A result you can't explain is a result you can't sign.</em></p>
+
+<h4>It's the industry, not just my corner</h4>
+<p>For a while I assumed this was hardware-team culture — my corner's conservatism. Then I compared notes with a colleague in computational lithography, about as software-heavy as ASML gets, and heard the same thing: machine learning shows up far less than outsiders would guess, and explainability is the reason. Another colleague is building an internal AI agent for diagnostics; it's RAG-based, plain and deliberate. Next to the agent harnesses the AI-native world ships, plain RAG looks almost quaint. My read: it isn't lag. In a hardware company the process is the product — a conclusion nobody can trace is worth less than a weaker conclusion everyone can audit. This is an industry trained by decades of debugging at nanometer scale, and it has concluded that trust compounds faster than cleverness.</p>
+
+<h4>Robustness is a budget</h4>
+<p>Underneath all of this sits a systems argument, and it's where my conviction actually comes from. A tool like mine doesn't run in a vacuum — it runs inside a loop with hardware and people. The software automates measurement and judgment, but an engineer still physically adjusts the machine in response to what it says. In a mixed system, every stage solved in the simplest, lowest-compute way is robustness banked for the whole loop; every opaque stage is debugging debt parked downstream, waiting.</p>
+<p>Legacy code adds another wall to that budget. One internal library my tool depended on was written something like a decade ago and capped which Python versions I could even use; wiring it in ate real time. That's the normal texture of a hardware company — the source code under any new feature may be ten or twenty years old, and iteration after v1 stays deliberately simple for exactly that reason. The engineering stance that falls out of all this: meet the requirement completely, a full 100, in the simplest way — rather than hit 120 with something fancy. The extra twenty points are bought with robustness, and that currency is not refundable.</p>
+<p>The honest footnote: I wanted to build the CNN. It would have made the vision step more general — less dependent on my controlled lighting and fixed geometry — and it would have been more fun to talk about. I chose against it, and the reasoning still holds: generality the task didn't need, purchased with explainability the system couldn't afford to lose.</p>
+
+<h4>TL;DR</h4>
+<p>None of this is an argument against deep learning — where the problem demands it, I'll reach for it without hesitation. It's an argument about defaults. Mine, in pocket form:</p>
+<ul>
+<li>The environment is part of the spec. A tool that needs hardware the room doesn't have isn't a tool; it's a demo.</li>
+<li>Explainability outranks accuracy-on-paper. A result you can't explain is a result you can't sign.</li>
+<li>Legacy is a design input, not an excuse. The code under your feature may be twenty years old — build like it.</li>
+<li>Aim for 100 the simple way, not 120 the fancy way. The difference is paid in robustness, and it's not refundable.</li>
+</ul>
+<p>Fancy technology doesn't always win. <em>Fancy is a property of the demo; simple is a property of the deployment.</em></p>
+
+    </div>
+    <a class="pback" href="../writing.html">&larr; Back to all writing</a>
+  </article>
+  <footer>&copy; Liang Li</footer>
+</body>
+</html>

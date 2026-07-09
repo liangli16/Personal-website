@@ -8,45 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{--cream:#efe8da;--cream2:#f4efe4;--ink:#2a2218;--ink-soft:#473c2c;--muted:#736755;--brown:#8a6b45;--brown-deep:#6f5536;--line:rgba(52,40,24,.18);
-    --serif:"Newsreader",Georgia,serif;--body:"Source Serif 4",Georgia,serif;--sans:"Hanken Grotesk",system-ui,sans-serif}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--body);background:var(--cream);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
-  .abar{position:sticky;top:0;z-index:20;background:rgba(239,232,218,.9);backdrop-filter:blur(8px);box-shadow:0 14px 34px -24px rgba(46,34,18,.4);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
-  .abar .brand{font-family:var(--serif);font-weight:600;font-size:21px}
-  .back{font-size:15px;color:var(--muted)} .back:hover{color:var(--ink)}
-  .post-wrap{max-width:720px;margin:0 auto;padding:56px 24px 40px}
-  .cat{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.14em;color:var(--brown);text-transform:uppercase;display:block;margin-bottom:20px}
-  .ptitle{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.6vw,48px);line-height:1.12;letter-spacing:-.015em}
-  .dek{font-family:var(--serif);font-style:italic;font-size:clamp(19px,2.5vw,25px);color:var(--muted);margin-top:14px}
-  .pdate{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.06em;color:var(--muted);margin:26px 0 34px}
-  .phero{margin:0 0 36px;border:1px solid var(--line);overflow:hidden;border-radius:4px}
-  .content{font-size:18.5px;line-height:1.75;color:var(--ink-soft)}
-  .content p{margin-bottom:20px}
-  .content ol{margin:0 0 20px 24px}
-  .content li{margin-bottom:12px;padding-left:6px}
-  .content li::marker{font-family:var(--sans);font-weight:600;font-size:15px;color:var(--brown)}
-  .content h4{font-family:var(--serif);font-size:25px;font-weight:500;color:var(--ink);margin:32px 0 6px;letter-spacing:-.01em}
-  .content em{color:var(--brown-deep);font-style:italic}
-  .pback{display:inline-block;margin-top:46px;font-family:var(--sans);font-size:13px;letter-spacing:.08em;color:var(--brown)} .pback:hover{color:var(--ink)}
-  footer{margin-top:60px;padding:34px 24px;text-align:center;color:var(--muted);font-size:12.5px;font-family:var(--sans);letter-spacing:.08em}
-  @media(max-width:680px){.post-wrap{padding:40px 20px 30px}.content{font-size:18px}}
-  a:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
-</style>
+<link rel="stylesheet" href="../assets/css/post.css">
 </head>
 <body>
   <div class="abar">
-    <a class="back" href="writing.html">&larr; All writing</a>
-    <a class="brand" href="index.html">Liang Li</a>
+    <a class="back" href="../writing.html">&larr; All writing</a>
+    <a class="brand" href="../index.html">Liang Li</a>
   </div>
   <article class="post-wrap">
     <span class="cat">AI &amp; Robotics</span>
     <h1 class="ptitle">How I accidentally became an AI tutor</h1>
     <p class="dek">On building one small tool, and the brilliant people it turned out to help.</p>
     <p class="pdate">June 29, 2026</p>
-    <div class="phero"><img alt="Johannes Vermeer, The Astronomer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Johannes_Vermeer_-_The_Astronomer_-_WGA24685.jpg?width=1400"></div>
+    <div class="phero"><img alt="Johannes Vermeer, The Astronomer" src="../assets/img/astronomer.jpg"></div>
     <div class="content">
 
 <p>The most useful thing I built at ASML started as a favor. In D&amp;E — ASML's development &amp; engineering org, where I worked — a colleague had worked out beautiful physics for aligning an electron gun — a process that, until then, was done by a human eyeballing a glowing spot and turning knobs. The model was stuck at the theory stage because nobody could reliably measure the spot. I knew computer vision, so I got asked. I built the measurement, then a GUI around it, and alignment went from a craft that took an experienced eye to a number anyone could hit: about ten times more precise, 66% faster. The interesting part, it turns out, wasn't the pipeline. It's everything that happened around it.</p>
@@ -68,7 +42,7 @@
 </ol>
 <p>I'm heading into robotics next, where this exact gap is wider than anywhere: extraordinary machines, and a developer experience that still assumes you already know everything. That seam — between hard systems and the people who need them to just work — is where I want to work next.</p>
     </div>
-    <a class="pback" href="writing.html">&larr; Back to all writing</a>
+    <a class="pback" href="../writing.html">&larr; Back to all writing</a>
   </article>
   <footer>&copy; Liang Li</footer>
 </body>
