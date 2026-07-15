@@ -17,6 +17,15 @@
    ===================================================================== */
 const POSTS = [
   {
+    href: "posts/post-line-shaft.html",
+    cat: "ai-robotics", catLabel: "AI & Robotics",
+    no: "005", read: "5 min read",
+    title: "AI has a line-shaft problem",
+    dek: "Uber burned a year of AI budget in four months and can\u2019t find the product gains. The electric motor spent thirty years in the same place.",
+    img: "assets/img/ironmill.jpg",
+    imgAlt: "Adolph Menzel, The Iron Rolling Mill"
+  },
+  {
     href: "posts/post-no-deep-learning.html",
     cat: "ai-robotics", catLabel: "AI & Robotics",
     no: "004", read: "5 min read",
