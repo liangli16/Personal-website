@@ -66,7 +66,7 @@ Copy must match the resume facts. Approved claims:
 - MuJoCo demo: honest "assisted grasp / weld constraint" framing; built on M1 MacBook Air, CPU only
 - AI agent: "contributed domain knowledge" (never "architected")
 - TSMC: "resolved customer-site issues" (never "partnered directly")
-- Virtuoso Ads: solo-built. Quid Pro Quo: hackathon winner.
+- Tonewood: solo-built AI guitar coach, live beta at tonewood.vercel.app (private repo); companion public eval repo github.com/liangli16/guitarset-strum-eval. Approved framing: timestamped claims come from signal analysis (LLM never supplies a number); thresholds calibrated on public corpora (GuitarSet, Ego-Exo4D); approved metric: spurious gap detections cut ~14/min → ~1/min via corpus-validated gating (matches resume). Site copy stays narrative voice — never resume-bullet style — but carries this one metric as proof. Quid Pro Quo: hackathon winner. Virtuoso Ads: solo-built (removed from site Aug 2026, may reference in writing).
 
 Positioning: physical AI / robotics / DevRel. Not PM, not pure investing — markets essays are welcome as a category, but the site identity is "engineer building for the physical AI developer ecosystem."
 
@@ -145,7 +145,7 @@ The homepage Blog section stays posts-free by design (emergences-style: blog liv
 - About: personal voice, NOT resume/job-hunting tone. Current copy: Sunnyvale intro + "equations meet execution" -> ASML/UC Davis/Penn/Fermilab woven as narrative (not a role list) -> hobbies (ping-pong, guitar, museums) closing with the museums-to-old-paintings tie. Stats trio REMOVED (Jul 2026). Institution names (ASML / UC Davis / Penn / Fermilab) get static marker-highlight via .acopy .hlt (lower-half --hl swipe).
 - NOW block: REMOVED (less is more). Do not re-add.
 - Journal categories: exactly three — AI & Robotics / Semiconductors & Infra / Thoughts & Misc (+ All chip). No "AI Events". Filter values must match card data-cat exactly: ai-robotics / semis-infra / thoughts-misc.
-- Selected Work (Jul 2026): exactly 2 projects — [W.01] Virtuoso Ads, [W.02] Quid Pro Quo — plus 2 papers. Sub-pixel CV card REMOVED (ASML-sensitive) and MuJoCo card REMOVED (not polished yet); may return later. Pager arrows auto-hide when pages<=1.
+- Selected Work (Aug 2026): exactly 2 projects — [W.01] Tonewood (AI guitar coach, live beta; links: tonewood.vercel.app + guitarset-strum-eval GitHub repo), [W.02] Quid Pro Quo — plus 2 papers. Virtuoso Ads card REPLACED by Tonewood (Aug 2026). Sub-pixel CV card REMOVED (ASML-sensitive) and MuJoCo card REMOVED (not polished yet); may return later. Pager arrows auto-hide when pages<=1.
 - About layout: photo LEFT (.72fr, smaller) / text RIGHT (1.28fr) to alternate with the hero portrait (which sits right). Mobile: text first, photo below.
 - Post 4 (Jul 2026): post-no-deep-learning.html — "Why we didn't use deep learning", AI & Robotics, July 7 2026, [NO. 004], hero = Vermeer The Lacemaker (Commons hotlink, same pattern as Astronomer). The technical/judgment essay for the Roboflow DevAdvocate application. No ASML-proprietary details: approach described at edge-detection/filters/physics-model level only, numbers limited to the public resume set (10x, ~1 nm, 66%).
 

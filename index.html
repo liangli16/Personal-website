@@ -120,6 +120,8 @@
   .wcard p{font-size:16.5px;color:var(--ink-soft);margin-top:12px;flex:1}
   .wcard p em{color:var(--brown-deep)}
   .wcard .wlink{margin-top:20px;font-family:var(--sans);font-size:13px;letter-spacing:.08em;color:var(--brown)}
+  .wcard .wlinks{margin-top:20px;display:flex;gap:26px;flex-wrap:wrap}
+  .wcard .wlinks .wlink{margin-top:0}
   .wcard .wlink:hover,.wcard:hover .wlink{color:var(--ink)}
 
   /* work toggle + papers list */
@@ -255,9 +257,12 @@
     <div class="wgrid" id="wprojects">
       <div class="wcard reveal">
         <div class="wno"><span>[W. 01]</span><span class="tag">PRODUCT</span></div>
-        <h3>Virtuoso Ads</h3>
-        <p>An AI ad-creative tool integrating LLM and image-generation APIs — designed, built, and shipped end-to-end as a solo developer. My crash course in what it takes to turn a model into a product someone will actually use.</p>
-        <a class="wlink" href="https://www.youtube.com/watch?v=I37lXVABuSo" target="_blank" rel="noopener">Watch the demo &rarr;</a>
+        <h3>Tonewood</h3>
+        <p>An AI guitar coach, solo-built and live in beta. Film a minute of your playing; it watches both hands, hears your timing and tone, and turns the review into your practice week. Every timestamped claim comes from signal analysis — the language model never supplies a number. Validating against corpora of other people's playing cut spurious detections from 14/min to 1/min; that evaluation is published as its own open repo.</p>
+        <div class="wlinks">
+          <a class="wlink" href="https://tonewood.vercel.app" target="_blank" rel="noopener">Try the live beta &rarr;</a>
+          <a class="wlink" href="https://github.com/liangli16/guitarset-strum-eval" target="_blank" rel="noopener">Read the eval &rarr;</a>
+        </div>
       </div>
       <div class="wcard reveal">
         <div class="wno"><span>[W. 02]</span><span class="tag">DEVELOPER EDUCATION</span></div>
